@@ -1,0 +1,641 @@
+<% include partials/header.ejs %>
+<% include partials/adminSideBar.ejs %>
+
+<div id="wrapper">
+
+    <h1 class="text-center vlbc-colour-orange">Load Profiles</h1>
+
+    <%
+    var currentlyRunning = "";
+
+    if(runningSpeed) {
+        loadProfiles.forEach(function(loadProfile) {
+            if(loadProfile.RunningStatus === true){
+                currentlyRunning = loadProfile.LoadProfileName + " (" + runningSpeed + "x speed)";
+            }
+        });
+    }
+
+    if (currentlyRunning !== "") { %>
+
+        <div class="vlbc-container">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Currently Running Load Profile</h3>
+                </div>
+                <div class="panel-body">
+
+                    <form action="StopLoadProfile" method="post" class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <%= currentlyRunning %>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Stop</button>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
+    <% } else { %>
+
+    <div class="vlbc-container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Start Load Profile</h3>
+            </div>
+            <div class="panel-body">
+
+                <form action="StartLoadProfile" method="post" class="form-inline">
+                    <div class="input-group">
+                        <select class="form-control" name="runLoadProfileName">
+                            <option value="" disabled selected>None</option>
+                            <% loadProfiles.forEach(function(loadProfile) { %>
+                            <option value="<%= loadProfile.LoadProfileName %>"><%= loadProfile.LoadProfileName %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" name="speed">
+                            <% for(var tally = 1; tally <= 50; tally++) { %>
+                            <option value="<%= tally %>"><%= tally %>x</option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Start</button>
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <% } %>
+
+    <!--<div class="vlbc-table">-->
+        <!--<table class="table table-bordered table-striped">-->
+            <!--<thread>-->
+                <!--<tr>-->
+                    <!--<th>Run Load Profile From List</th>-->
+                    <!--<th>Currently Running Load Profile</th>-->
+                <!--</tr>-->
+            <!--</thread>-->
+            <!--<tbody>-->
+            <!--<tr>-->
+                <!--<td class="col-sm-8">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<form action="StartLoadProfile" method="post" class="form-inline">-->
+                                <!--<div class="input-group">-->
+                                    <!--<select class="form-control" name="runLoadProfileName">-->
+                                        <!--<option value="" disabled selected>None</option>-->
+                                        <!--<% loadProfiles.forEach(function(loadProfile) { %>-->
+                                        <!--<option value="<%= loadProfile.LoadProfileName %>"><%= loadProfile.LoadProfileName %></option>-->
+                                        <!--<% }); %>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<select class="form-control" name="speed">-->
+                                        <!--<% for(var tally = 1; tally <= 50; tally++) { %>-->
+                                        <!--<option value="<%= tally %>"><%= tally %>x</option>-->
+                                        <!--<% } %>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<button type="submit" class="btn btn-primary btn-block" type="button">Start</button>-->
+                                <!--</div>-->
+                            <!--</form>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</td>-->
+                <!--<td class="col-sm-4">-->
+
+
+                <!--</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    <!--</div>-->
+    </br>
+    </br>
+    </br>
+    </br>
+
+    <div class="row">
+        <div class="text-center">
+            <button class="btn btn-success btn-lg" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#addLoadProfile">Add Load Profile<span id="AddProfileBtnText" class="glyphicon glyphicon-plus"></span></button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addLoadProfile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add load profile</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="loading" class="text-center hidden">
+                            <img src="/images/loading.gif">
+                        </div>
+                        <form id="modalForm">
+                            <div class="form-group">
+                                <label for="loadProfileName" class="form-control-label">Load Profile Name</label>
+                                <input type="text" class="form-control" id="loadProfileName">
+                            </div>
+                            <!-- Upload excel load profile button -->
+                            <p class="text-center">
+                                <label id="addLoadProfileLabel" class="btn btn-primary btn-file disabled">
+                                    Find and upload excel file <span id="AddProfileBtnText" class="glyphicon glyphicon-plus"></span>
+                                    <input disabled type="file" id="xlf" name="xlfile" style="display: none;">
+                                </label>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="vlbc-table">
+        <table class="table table-bordered table-striped">
+            <thread>
+                <tr>
+                    <th>Load Profile</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thread>
+            <tbody>
+            <% loadProfiles.forEach(function(loadProfile){ %>
+            <tr>
+                <td class="col-sm-4 loadProfileName"><%= loadProfile.LoadProfileName %></td>
+                <td class="col-sm-4">
+                    <form action="/admin/loadProfile" method="post">
+                        <input type="hidden" name="loadProfileName" value="<%= loadProfile.LoadProfileName %>" />
+                        <button type="submit" class="btn btn-primary">View</button>
+                    </form>
+                </td>
+                <td class="col-sm-4">
+                    <button value="<%= loadProfile.LoadProfileName %>" class="btn btn-danger deleteLoadProfile">Delete</button>
+                </td>
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!--maybe required by excel uploaded-->
+    <select name="format" hidden>
+        <option value="csv" > CSV</option>
+        <option value="json" selected> JSON</option>
+        <option value="form"> FORMULAE</option>
+    </select>
+    <div id="drop" hidden>Drop an XLSX / XLSM / XLSB / ODS / XLS / XML file here to see sheet data</div>
+
+    <textarea id="b64data" hidden>... or paste a base64-encoding here</textarea>
+    <input type="button" hidden id="dotext" value="Click here to process the base64 text" onclick="b64it();"/><br/>
+
+    <input type="checkbox" name="useworker" hidden ><br/>
+    <input type="checkbox" name="xferable" hidden ><br/>
+    <input type="checkbox" name="userabs" hidden ><br/>
+    <!--<pre id="out"></pre>-->
+    <!--maybe required by excel uploaded-->
+
+</div>
+<script>
+
+    $(document).ready(function(){
+        var currentLoadProfiles = [];
+
+        // get all load profile names
+        $(".loadProfileName").each(function(){
+            currentLoadProfiles.push(($(this).html()));
+        });
+
+        // check with user input load profile name
+        $( "#loadProfileName").keyup(function() {
+            var input = $(this).val().trim();
+
+
+            if(currentLoadProfiles.indexOf(input) > -1) {
+                // name exists in array
+
+                // show red bordered input field
+                $(this).parent(".form-group").addClass("has-error");
+
+                // disable select excel file button
+                $("#addLoadProfileLabel").addClass("disabled");
+                $("#xlf").prop("disabled", true);
+
+                if(!$("#alertMessage").length) {
+                    $(this).parent(".form-group").append('<div id="alertMessage" class="alert alert-danger"><strong>Load Profile with same name exists.</strong></div>');
+                }
+
+                if($("#alertMessage").hasClass("alert-success")) {
+                    $("#alertMessage").removeClass("alert-success").addClass("alert-danger").find("strong").text("Load Profile with same name exists.");
+                }
+
+
+
+            } else if(input === "") {
+                // disable select excel file button
+
+                // remove red border from input filed
+                $(this).parent(".form-group").removeClass("has-error");
+
+                $("#addLoadProfileLabel").addClass("disabled");
+                $("#xlf").prop("disabled", true);
+                $("#alertMessage").removeClass("alert-danger").addClass("alert-success").find("strong").text("Enter Load Profile name");
+
+            } else { // name does not exist in array
+
+                // remove red border from input filed
+                $(this).parent(".form-group").removeClass("has-error");
+
+                // change alert text
+                $("#alertMessage").removeClass("alert-danger").addClass("alert-success").find("strong").text("Looks good!!!");
+
+                // enable select excel file button
+                $("#addLoadProfileLabel").removeClass("disabled");
+                $("#xlf").prop("disabled", false);
+
+            }
+        });
+
+        $('#addLoadProfile').on('shown.bs.modal', function() {
+            $("#loadProfileName").focus();
+            $("#addLoadProfileLabel").addClass("disabled");
+            $("#xlf").prop("disabled", true);
+        })
+
+
+        $('.deleteLoadProfile').click(function(event){
+            event.preventDefault();
+
+            console.log($(this).val());
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify({loadProfileName: $(this).val()}),
+                contentType: 'application/json',
+                url: 'deleteLoadProfile',
+                success: function (data) {
+                    console.log(JSON.stringify(data));
+
+                    if(data.message === "successful") {
+                        location.reload();
+                    }
+
+                }
+            });
+
+        });
+
+
+    });
+
+    $(document).ajaxStart(function () {
+        $('#modalForm').hide();
+        $('#loading').removeClass('hidden');
+    });
+
+    $(document).ajaxComplete(function () {
+        //$('#loading').addClass('hidden');
+        //$('#modalForm').show();
+    });
+
+
+
+</script>
+
+
+
+<!-- uncomment the next line here and in xlsxworker.js for encoding support -->
+<!--<script src="dist/cpexcel.js"></script>-->
+<script src="http://oss.sheetjs.com/js-xlsx/shim.js"></script>
+<script src="http://oss.sheetjs.com/js-xlsx/jszip.js"></script>
+<script src="http://oss.sheetjs.com/js-xlsx/xlsx.js"></script>
+<!-- uncomment the next line here and in xlsxworker.js for ODS support -->
+<script src="http://oss.sheetjs.com/js-xlsx/ods.js"></script>
+<script>
+    var X = XLSX;
+    var XW = {
+        /* worker message */
+        msg: 'xlsx',
+        /* worker scripts */
+        rABS: './xlsxworker2.js',
+        norABS: './xlsxworker1.js',
+        noxfer: './xlsxworker.js'
+    };
+
+    var rABS = typeof FileReader !== "undefined" && typeof FileReader.prototype !== "undefined" && typeof FileReader.prototype.readAsBinaryString !== "undefined";
+    if (!rABS) {
+        document.getElementsByName("userabs")[0].disabled = true;
+        document.getElementsByName("userabs")[0].checked = false;
+    }
+
+    var use_worker = typeof Worker !== 'undefined';
+    if (!use_worker) {
+        document.getElementsByName("useworker")[0].disabled = true;
+        document.getElementsByName("useworker")[0].checked = false;
+    }
+
+    var transferable = use_worker;
+    if (!transferable) {
+        document.getElementsByName("xferable")[0].disabled = true;
+        document.getElementsByName("xferable")[0].checked = false;
+    }
+
+    var wtf_mode = false;
+
+    function fixdata(data) {
+        var o = "", l = 0, w = 10240;
+        for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+        return o;
+    }
+
+    function ab2str(data) {
+        var o = "", l = 0, w = 10240;
+        for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint16Array(data.slice(l * w, l * w + w)));
+        o += String.fromCharCode.apply(null, new Uint16Array(data.slice(l * w)));
+        return o;
+    }
+
+    function s2ab(s) {
+        var b = new ArrayBuffer(s.length * 2), v = new Uint16Array(b);
+        for (var i = 0; i != s.length; ++i) v[i] = s.charCodeAt(i);
+        return [v, b];
+    }
+
+    function xw_noxfer(data, cb) {
+        var worker = new Worker(XW.noxfer);
+        worker.onmessage = function (e) {
+            switch (e.data.t) {
+                case 'ready':
+                    break;
+                case 'e':
+                    console.error(e.data.d);
+                    break;
+                case XW.msg:
+                    cb(JSON.parse(e.data.d));
+                    break;
+            }
+        };
+        var arr = rABS ? data : btoa(fixdata(data));
+        worker.postMessage({d: arr, b: rABS});
+    }
+
+    function xw_xfer(data, cb) {
+        var worker = new Worker(rABS ? XW.rABS : XW.norABS);
+        worker.onmessage = function (e) {
+            switch (e.data.t) {
+                case 'ready':
+                    break;
+                case 'e':
+                    console.error(e.data.d);
+                    break;
+                default:
+                    xx = ab2str(e.data).replace(/\n/g, "\\n").replace(/\r/g, "\\r");
+                    console.log("done");
+                    cb(JSON.parse(xx));
+                    break;
+            }
+        };
+        if (rABS) {
+            var val = s2ab(data);
+            worker.postMessage(val[1], [val[1]]);
+        } else {
+            worker.postMessage(data, [data]);
+        }
+    }
+
+    function xw(data, cb) {
+        transferable = document.getElementsByName("xferable")[0].checked;
+        if (transferable) xw_xfer(data, cb);
+        else xw_noxfer(data, cb);
+    }
+
+    function get_radio_value(radioName) {
+        var radios = document.getElementsByName(radioName);
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked || radios.length === 1) {
+                return radios[i].value;
+            }
+        }
+    }
+
+    function to_json(workbook) {
+        var result = {};
+        workbook.SheetNames.forEach(function (sheetName) {
+            var roa = X.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+            if (roa.length > 0) {
+                result[sheetName] = roa;
+            }
+        });
+        console.log(result);  //This is the OBJECT 'Sheet1 ' with the array of all JSON objects
+        return result;
+    }
+
+    function to_csv(workbook) {
+        var result = [];
+        workbook.SheetNames.forEach(function (sheetName) {
+            var csv = X.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+            if (csv.length > 0) {
+                result.push("SHEET: " + sheetName);
+                result.push("");
+                result.push(csv);
+            }
+        });
+        return result.join("\n");
+    }
+
+    function to_formulae(workbook) {
+        var result = [];
+        workbook.SheetNames.forEach(function (sheetName) {
+            var formulae = X.utils.get_formulae(workbook.Sheets[sheetName]);
+            if (formulae.length > 0) {
+                result.push("SHEET: " + sheetName);
+                result.push("");
+                result.push(formulae.join("\n"));
+            }
+        });
+        return result.join("\n");
+    }
+
+    var tarea = document.getElementById('b64data');
+    function b64it() {
+        if (typeof console !== 'undefined') console.log("onload", new Date());
+        var wb = X.read(tarea.value, {type: 'base64', WTF: wtf_mode});
+        process_wb(wb);
+    }
+
+    function process_wb(wb) {
+        var output = "";
+        switch (get_radio_value("format")) {
+            case "json":
+                output = JSON.stringify(to_json(wb), 2, 2);
+
+                var data = {};
+                data.profile = [];
+
+                var loadProfileName = $('#loadProfileName').val();
+
+                data.profile.push({LoadProfileName: loadProfileName})
+
+                // first loop to get each sheet out of excelt data
+                $.each(JSON.parse(output), function (index, obj) {
+                    // second loop to get each object of sheet array
+                    obj.forEach(function(obje){
+
+                        var time = obje.T.split(':');
+
+                        var hours = parseInt(time[0]);
+                        var minutes = parseInt(time[1]);
+                        var power = parseFloat(obje.P);
+
+                        data.profile.push({Time: {Hours: hours, Minutes: minutes}, Power: power});
+
+                    });
+                });
+
+                //console.log(data.profile);
+
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(data.profile),
+                    contentType: 'application/json',
+                    url: 'uploadExcelLoadProfile',
+                    success: function (data) {
+                        //console.log(JSON.stringify(data));
+                        console.log(data);
+
+                        if(data.message === "successful") {
+                            location.reload();
+                        }
+
+                    }
+                });
+
+                break;
+            case "form":
+                output = to_formulae(wb);
+                break;
+            default:
+                output = to_csv(wb);
+        }
+
+
+
+
+    }
+
+    var drop = document.getElementById('drop');
+    function handleDrop(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        rABS = document.getElementsByName("userabs")[0].checked;
+        use_worker = document.getElementsByName("useworker")[0].checked;
+        var files = e.dataTransfer.files;
+        var f = files[0];
+        {
+            var reader = new FileReader();
+            var name = f.name;
+            reader.onload = function (e) {
+                if (typeof console !== 'undefined') console.log("onload", new Date(), rABS, use_worker);
+                var data = e.target.result;
+                if (use_worker) {
+                    xw(data, process_wb);
+                } else {
+                    var wb;
+                    if (rABS) {
+                        wb = X.read(data, {type: 'binary'});
+                    } else {
+                        var arr = fixdata(data);
+                        wb = X.read(btoa(arr), {type: 'base64'});
+                    }
+                    process_wb(wb);
+                }
+            };
+            if (rABS) reader.readAsBinaryString(f);
+            else reader.readAsArrayBuffer(f);
+        }
+    }
+
+    function handleDragover(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+    }
+
+    if (drop.addEventListener) {
+        drop.addEventListener('dragenter', handleDragover, false);
+        drop.addEventListener('dragover', handleDragover, false);
+        drop.addEventListener('drop', handleDrop, false);
+    }
+
+
+    var xlf = document.getElementById('xlf');
+    function handleFile(e) {
+        rABS = document.getElementsByName("userabs")[0].checked;
+        use_worker = document.getElementsByName("useworker")[0].checked;
+        var files = e.target.files;
+        var f = files[0];
+        {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                if (typeof console !== 'undefined') console.log("onload", new Date(), rABS, use_worker);
+                var data = e.target.result;
+                if (use_worker) {
+                    xw(data, process_wb);
+                } else {
+                    var wb;
+                    if (rABS) {
+                        wb = X.read(data, {type: 'binary'});
+                    } else {
+                        var arr = fixdata(data);
+                        wb = X.read(btoa(arr), {type: 'base64'});
+                    }
+                    process_wb(wb);
+                }
+            };
+            if (rABS) reader.readAsBinaryString(f);
+            else reader.readAsArrayBuffer(f);
+        }
+    }
+
+    if (xlf.addEventListener) xlf.addEventListener('change', handleFile, false);
+</script>
+
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36810333-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+
+
+
+<% include partials/footer.ejs %>

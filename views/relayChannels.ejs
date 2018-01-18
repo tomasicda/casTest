@@ -1,0 +1,72 @@
+<% include partials/header.ejs %>
+<% include partials/adminSideBar.ejs %>
+
+<div id="wrapper">
+    <h1 class="text-center vlbc-colour-orange">Relay Channels</h1>
+    <div class="vlbc-table">
+        <table class="table table-bordered table-striped">
+            <thread>
+                <tr>
+                    <th>Channel #</th>
+                    <th>Current status</th>
+                    <th>Watts</th>
+                    <th>Switch Counts</th>
+                    <th>Reset Counts</th>
+                </tr>
+            </thread>
+            <tbody>
+            <%
+            // counter to limit number of channels will be displayed
+            var displayingChannelCounter = 0;
+            var channelStatus = 'Off';
+            allChannels.forEach(function(channel) {
+                // limiting how many channels will be displayed
+                displayingChannelCounter++;
+                if(displayingChannelCounter > 8) return false;
+
+                if(channel.status === true) channelStatus = 'On';
+                else channelStatus = 'Off';
+
+            %>
+                <tr>
+                    <td><%= channel.channelNumber %></td>
+                    <td><%= channelStatus %></td>
+                    <td><%= channel.watts %></td>
+                    <td id="switchCountChannel<%= channel.channelNumber %>"><%= channel.switchCount %></td>
+                    <td><button class="btn btn-primary resetRelaySwitchCounts" data-channel="<%= channel.channelNumber %>">Reset counts</button></td>
+                </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+
+            $(document).ready(function () {
+
+                $('.resetRelaySwitchCounts').on( 'click', function(){
+
+                    event.preventDefault();
+
+                    var data = { channelNumber: $(this).attr('data-channel') };
+
+                    $.ajax({
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        url: 'resetRelayCount',
+                        success: function (channel) {
+                            $('#switchCountChannel' + data.channelNumber).html(channel.switchCount);
+                        }
+                    });
+
+                });
+
+            });
+
+
+
+</script>
+<% include partials/footer.ejs %>

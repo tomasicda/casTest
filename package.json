@@ -14,6 +14,7 @@
     "mongodb": "^2.1.16",
     "mongoose": "^4.4.11",
     "morgan": "~1.6.1",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "iotduino": "~0.1.8"
   }
 }

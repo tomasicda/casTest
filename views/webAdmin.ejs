@@ -1,0 +1,46 @@
+<% include partials/header.ejs %>
+<% include partials/navbar.ejs %>
+<h1 class="text-center vlbc-colour-orange">VLBC Web Admin</h1>
+
+<div class="container">
+    <div class="row">
+        </br>
+        <div class="col-lg-6 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            Relay Channels
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button id="addRelayChannel" class="btn btn-primary">Add Relay Channels</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<% include partials/footer.ejs %>
+<script>
+    $(document).ready(function () {
+        $("#addRelayChannel").click(function(event){
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify({addRelayChannels: "addRelayChannels"}),
+                contentType: "application/json",
+                url: "/webAdmin/addRelayChannels",
+                success: function (data) {
+                    console.log(JSON.stringify(data));
+                    if(data.message === "successful") {
+                        //console.log("Ajax call successfully completed");
+                    }
+                }
+            });
+        });
+    });
+
+</script>

@@ -1,0 +1,66 @@
+<% include partials/header.ejs %>
+<% include partials/navbar.ejs %>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+<h1 class="text-center vlbc-colour-orange">Manual Switch</h1>
+<div class="container">
+    <div class="vlbc-table">
+        <table class="table table-bordered table-striped">
+                <tr>
+                    <th>Channel</th>
+                    <th>Switch</th>
+                    <th>Switch Counts<ht>
+                </tr>
+            <tbody>
+            <%
+            // counter to limit number of channels will be displayed
+            var displayingChannelCounter = 0;
+            allChannels.forEach(function(channel) {
+                // limiting how many channels will be displayed
+                displayingChannelCounter++;
+                if(displayingChannelCounter > 8) return false;
+
+                var statusChannel = 'statusChannel-' + channel.channelNumber;
+                var channelCount = 'channelCount-' + channel.channelNumber;
+                var isToggled = '';
+                if(channel.status === true) {
+                    isToggled = 'checked';
+                }
+            %>
+            <tr>
+                <td class="col-sm-3"><%= channel.channelNumber %></td>
+                <td class="col-sm-3">
+                    <input class="toggle-switch" type="checkbox" <%= isToggled %> data-channel="<%= channel.channelNumber %>" data-switch-counts="<%= channel.switchCount%>" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                </td>
+                <td class="col-sm-3" id="<%= channelCount %>"><%= channel.switchCount %></td>
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(function() {
+        $('.toggle-switch').change(function() {
+
+            var channelNumber = $(this).attr('data-channel')
+
+            var data = {
+                channelNumber: channelNumber,
+                status: $(this).prop('checked'),
+                switchCount: parseInt($('#channelCount-' + channelNumber).html())
+            };
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: 'manualSwitch/switch',
+                success: function () {
+
+                }
+            });
+        })
+    })
+</script>
+<% include partials/footer.ejs %>

@@ -1,0 +1,287 @@
+<% include partials/header.ejs %>
+<% include partials/adminSideBar.ejs %>
+
+<!--<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">-->
+<!--<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.core.min.js"></script>-->
+
+<!--<div id="wrapper">-->
+    <!--<h1 class="text-center vlbc-colour-orange">Admin Page</h1>-->
+
+    <!--<a class="apple" value="1">juyjyuy</a>-->
+
+    <!--&lt;!&ndash;<h1 class="text-center vlbc-colour-orange" id="emptyH1"></h1>&ndash;&gt;-->
+
+    <!--<div id="addProfileShowBtn">-->
+        <!--<button type="button" id="AddProfileBtn" class="btn btn-success pull-right" data-toggle="modal" data-target="#myModal">-->
+            <!--Add Load Profile<span id="AddProfileBtnText" class="glyphicon glyphicon-plus"></span>-->
+        <!--</button>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash; Modal Add Load Profile&ndash;&gt;-->
+    <!--<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">-->
+        <!--<div class="modal-dialog" role="document">-->
+            <!--<div class="modal-content">-->
+                <!--<div class="modal-header">-->
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+                                <!--aria-hidden="true">&times;</span></button>-->
+                    <!--<h4 class="modal-title" id="myModalLabel">Add Load Profile</h4>-->
+                <!--</div>-->
+                <!--<div class="modal-body">-->
+
+                    <!--<label class="control-label">Select File</label>-->
+                    <!--<input id="xlf" name="xlfile" type="file" class="file">-->
+
+
+                    <!--<script>-->
+
+                        <!--var xlf = document.getElementById('xlf');-->
+                        <!--function handleFile(e) {-->
+                            <!--rABS = document.getElementsByName("userabs")[0].checked;-->
+                            <!--use_worker = document.getElementsByName("useworker")[0].checked;-->
+                            <!--var files = e.target.files;-->
+                            <!--var f = files[0];-->
+                            <!--{-->
+                                <!--var reader = new FileReader();-->
+                                <!--var name = f.name;-->
+                                <!--reader.onload = function(e) {-->
+                                    <!--if(typeof console !== 'undefined') console.log("onload", new Date(), rABS, use_worker);-->
+                                    <!--var data = e.target.result;-->
+                                    <!--if(use_worker) {-->
+                                        <!--xw(data, process_wb);-->
+                                    <!--} else {-->
+                                        <!--var wb;-->
+                                        <!--if(rABS) {-->
+                                            <!--wb = X.read(data, {type: 'binary'});-->
+                                        <!--} else {-->
+                                            <!--var arr = fixdata(data);-->
+                                            <!--wb = X.read(btoa(arr), {type: 'base64'});-->
+                                        <!--}-->
+                                        <!--process_wb(wb);-->
+                                    <!--}-->
+                                <!--};-->
+                                <!--if(rABS) reader.readAsBinaryString(f);-->
+                                <!--else reader.readAsArrayBuffer(f);-->
+                            <!--}-->
+                        <!--}-->
+
+                        <!--if(xlf.addEventListener) xlf.addEventListener('change', handleFile, false);-->
+                    <!--</script>-->
+                    <!--<br/>-->
+                    <!--<br/>-->
+
+                    <!--&lt;!&ndash;< Uncomment for Toggle buttons  >&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<table class="table col-md-12 text-center">&ndash;&gt;-->
+
+                            <!--&lt;!&ndash;< for(var i = 1; i <= 21; i++) { >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<tr class="col-md-4">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<td class="text-center">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<p>Ch: <= i ></p>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<td class="centre">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<input type="checkbox" checked data-toggle="toggle" data-onstyle="success"&ndash;&gt;-->
+                                           <!--&lt;!&ndash;data-offstyle="danger">&ndash;&gt;-->
+                                <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                            <!--&lt;!&ndash;< } >&ndash;&gt;-->
+                        <!--&lt;!&ndash;</table>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" id="addExcelFile" class="btn btn-primary col-md-10 col-sm-10">Add</button>-->
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="buttonsManualSwitch" id="timeSchedulesProfiles" style="padding: 2em ; margin-top: 2em" data-toggle="modal" data-target="#myModal1">-->
+        <!--<button type="button" class="list-group-item list-group-item-action active ">-->
+            <!--Created Load Profiles-->
+        <!--</button>-->
+        <!--<button type="button" class="list-group-item list-group-item-action">Test 1</button>-->
+        <!--<button type="button" class="list-group-item list-group-item-action">Test 2</button>-->
+        <!--<button type="button" class="list-group-item list-group-item-action">Test 3 </button>-->
+        <!--<button type="button" class="list-group-item list-group-item-action disabled">Time Schedules</button>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash; Modal Set Time Schedules&ndash;&gt;-->
+    <!--<div class="modal fade" id="myModal1" role="dialog" aria-labelledby="myModalLabel">-->
+        <!--<div class="modal-dialog" role="document">-->
+            <!--<div class="modal-content">-->
+                <!--<div class="modal-header">-->
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
+                                <!--aria-hidden="true">&times;</span></button>-->
+                    <!--<h4 class="modal-title" id="myModalLabel">Add Load Profile</h4>-->
+                <!--</div>-->
+                <!--<div class="modal-body">-->
+                    <!--<div class="row">-->
+                        <!--<label class="col-md-2 text-center">Name</label>-->
+                        <!--<div class="col-md-10">-->
+                            <!--<input class="form-control" type="text" value="" placeholder="Profile Name">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<br/>-->
+                    <!--<br/>-->
+
+                    <!--<p>Start Date: <input type="text" id="datepicker"></p>-->
+                    <!--<script>-->
+                        <!--$( function() {-->
+                            <!--$( "#datepicker" ).datepicker();-->
+                        <!--} );-->
+                    <!--</script>-->
+                    <!--<br/>-->
+                    <!--<br/>-->
+
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-primary col-md-10 col-sm-10">Add</button>-->
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+<!--<script>-->
+
+<!--</script>-->
+
+<!--<script>-->
+    <!--$(document).ready(function () {-->
+
+        <!--var showAddProfileButton = false;-->
+        <!--var showTimeScheduleButton = false;-->
+
+        <!--$('#loadProfiles').click(function () {-->
+
+            <!--if (!showAddProfileButton) {-->
+                <!--$('#addProfileShowBtn').show();-->
+                <!--showAddProfileButton = true;-->
+            <!--}-->
+
+            <!--showTimeScheduleButton = false;-->
+            <!--$('#timeSchedulesProfiles').hide();-->
+
+            <!--var data = {};-->
+            <!--data.title = "title";-->
+            <!--data.message = "message";-->
+
+            <!--$.ajax({-->
+                <!--type: 'POST',-->
+                <!--data: JSON.stringify(data),-->
+                <!--contentType: 'application/json',-->
+                <!--url: 'admin/loadProfiles',-->
+                <!--success: function (data) {-->
+                    <!--console.log(JSON.stringify(data));-->
+
+                    <!--var result = JSON.stringify(data);-->
+
+                    <!--$('#emptyH1').append(result);-->
+
+                <!--}-->
+            <!--});-->
+
+        <!--});-->
+
+        <!--$('#LoadTimeShedules').click(function () {-->
+
+            <!--$('#addProfileShowBtn').hide();-->
+            <!--showAddProfileButton = false;-->
+
+            <!--if (!showTimeScheduleButton){-->
+                <!--$('#timeSchedulesProfiles').show();-->
+                <!--showTimeScheduleButton = true;-->
+            <!--}-->
+
+        <!--});-->
+
+        <!--$('#relayChannels').click(function(event){-->
+
+            <!--event.preventDefault();-->
+
+            <!--var data = {};-->
+            <!--data.test = 'Apple testing';-->
+
+            <!--$.ajax({-->
+                <!--type: 'POST',-->
+                <!--contentType: 'application/json',-->
+                <!--url: 'admin/relayChannels',-->
+                <!--success: function(data) {-->
+
+<!--//                    $.each(data,function(index,obj)-->
+<!--//                    {-->
+<!--//                        alert(obj.channelNumber);-->
+<!--//                    });-->
+
+                    <!--var toAppend = '<div class=\"vlbc-table\">' +-->
+                                    <!--'<table class=\"table table-bordered>\"' +-->
+                                        <!--'<thread>' +-->
+                                            <!--'<tr>' +-->
+                                                <!--'<th>Channel #</th>' +-->
+                                                <!--'<th>Current status</th>' +-->
+                                                <!--'<th>Switch Counts</th>' +-->
+                                                <!--'<th>Reset Counts</th>' +-->
+                                            <!--'</tr>' +-->
+                                        <!--'</thread>' +-->
+                                        <!--'<tbody>';-->
+
+                                        <!--$.each(data, function(index, obj) {-->
+
+                                            <!--//console.log(obj.channelNumber, obj.status, obj.switchCount);-->
+
+                                            <!--toAppend += '<tr>' +-->
+                                                <!--'<td>' + obj.channelNumber +'</td>' +-->
+                                                <!--'<td>' + obj.status + '</td>' +-->
+                                                <!--'<td>' + obj.switchCount + '</td>' +-->
+                                                <!--'<td><button onclick="myFunction()">Click me</button></td>' +-->
+                                            <!--'</tr>';-->
+                                        <!--});-->
+
+                    <!--toAppend +='</tbody>' +-->
+
+                                   <!--'</table></div>';-->
+
+                    <!--//console.log(toAppend);-->
+
+
+                    <!--$('#wrapper').append(toAppend);-->
+
+                <!--},-->
+                <!--error: function(error){-->
+                    <!--console.log(JSON.stringify(error));-->
+                <!--}-->
+
+
+            <!--});-->
+
+
+        <!--});-->
+
+
+        <!--function myFunction() {-->
+            <!--document.getElementById("demo").innerHTML = "Hello World";-->
+        <!--}-->
+
+
+
+
+        <!--$('.apple').click(function(){-->
+
+
+            <!--alert($(this).attr('value'));-->
+
+
+            <!--//alert($(this).attribute('value'));-->
+        <!--});-->
+
+
+
+
+    <!--});-->
+
+<!--</script>-->
+<% include partials/footer.ejs %>

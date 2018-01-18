@@ -6,8 +6,14 @@ var dbConnections = require('./DAO/DBConnection');
 var session = require('express-session');
 var mongoose = require ('mongoose');
 var bodyParser = require('body-parser');
+var LoadProfileManager = require('./Helpers/LoadProfileManager');
+
+// ============== Routes ==============
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var admin = require('./routes/admin');
+var manualSwitch = require('./routes/manualSwitch');
+var webAdmin = require('./routes/webAdmin');
+// ============== Routes Ends==============
 
 var app = express();
 
@@ -36,7 +42,9 @@ app.use(session(
 ));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/admin', admin);
+app.use('/manualSwitch', manualSwitch);
+app.use('/webAdmin', webAdmin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,6 +66,7 @@ if (app.get('env') === 'development') {
     });
   });
 }
+
 
 // production error handler
 // no stacktraces leaked to user

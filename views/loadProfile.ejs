@@ -1,0 +1,29 @@
+<% include partials/header.ejs %>
+<% include partials/adminSideBar.ejs %>
+
+<div id="wrapper">
+
+    <h1 class="text-center vlbc-colour-orange">Welcome to VLBC</h1>
+
+
+    <div class="vlbc-table">
+        <table class="table table-bordered table-striped">
+            <thread>
+                <tr>
+                    <th>Time (HH:MM)</th>
+                    <th>Total Watts</th>
+                </tr>
+            </thread>
+            <tbody>
+            <% loadProfile.forEach(function(profile) { %>
+            <tr>
+                <td><%= profile.Time.Hours %> : <%= profile.Time.Minutes %></td>
+                <td><%= profile.Power %></td>
+                <!--<td><button class="btn btn-primary" onclick="myFunction()">Reset counts</button></td>-->
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+<% include partials/footer.ejs %>

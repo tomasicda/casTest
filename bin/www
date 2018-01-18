@@ -8,12 +8,51 @@ var app = require('../app');
 var debug = require('debug')('VLBC:server');
 var http = require('http');
 
+
+
+// var duino = require( 'iotduino'),
+//     pinMode = duino.PinMode, pinState = duino.PinState,
+//     pins = duino.Pins, ledPin = pins.GPIO13;
+//
+// // pin 13 (GPIO13) is set as OUTPUT
+// duino.pinMode( ledPin, pinMode.OUTPUT);
+// // repeat every 500 milliseconds, 2 times per second
+// setInterval( function () {
+//   // alternate the pin state between HIGH and LOW
+//   duino.digitalWrite( ledPin, !duino.digitalRead( ledPin));
+// }, 500);
+
+
+
+/**
+  Testing i2c library
+ */
+
+// var i2c = require('i2c-bus'),
+//     i2c1;
+//
+// var ADDR = 0x20;
+//
+// i2c1 = i2c.open(1, function (err) {
+//   if (err) throw err;
+//
+//   (function readId() {
+//     i2c1.readByte(ADDR, function (err, id) {
+//       if (err) throw err;
+//       console.log(id);
+//       readId();
+//     });
+//   }());
+// });
+
+
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '8081');
-mongoURI = 'mongodb://localhost/casTest';
+var port = normalizePort(process.env.PORT || '8080');
+mongoURI = 'mongodb://localhost/vlbc';
 app.set('port', port);
 
 /**
@@ -25,6 +64,7 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
+
 
 server.listen(port);
 server.on('error', onError);
