@@ -49,7 +49,7 @@ admin.post('/addRelayChannels', restrict, function(req, res, next) {
             channel.save(function (err, name) {
                 if(err) throw err;
 
-                console.log('relayCHannel insert: ' + name);
+                console.log('relayChannel insert: ' + name);
             });
 
             counter++;
