@@ -8,7 +8,7 @@ var i2cManager = module.exports = {
     channelsAssigned: false,
 
     currentChannels: [],
-    
+
     write: function(byteNumber, relayShieldNumber) {
 
         //console.log("INSIDE i2C MANAGER...............BYTE NUM " + byteNumber + "  SHIELD NUM " + relayShieldNumber);

@@ -11,7 +11,7 @@ var restrict = require('../DAO/Session');
 admin.get('/loadProfiles', restrict,function (req, res) {
 
     // get all load profile names and their status only (excluding _id)
-    loadProfile.find({}, {LoadProfileName: 1, RunningStatus: 1, _id:0}, function(err, loadProfiles) {
+    loadProfile.find({}, {LoadProfileName: 1, RunningStatus: 1, Day:1, _id:0}, function(err, loadProfiles) {
 
         if(err) throw err;
 
@@ -36,7 +36,7 @@ admin.post('/loadProfile', restrict,function (req, res) {
             title: 'Load Profile | VLBC',
             loadProfile: dataSets
         });
-    });
+    }).sort({Day:1, Time:1});
 
 });
 
@@ -84,6 +84,8 @@ admin.post('/uploadExcelLoadProfile', restrict, function(req, res) {
     var loadProfileName = profiles.shift();
     loadProfileName = loadProfileName.LoadProfileName;
 
+    console.log('profiles retures ' + JSON.stringify(profiles));
+
     loadProfile.create({LoadProfileName: loadProfileName, RunningStatus: false}, function (err, savedProfile) {
         if (err) throw err;
 
@@ -92,7 +94,8 @@ admin.post('/uploadExcelLoadProfile', restrict, function(req, res) {
             var profe = new loadProfileDataSet({
                 LoadProfileName: loadProfileName,
                 Time: {Hours: profile.Time.Hours, Minutes: profile.Time.Minutes },
-                Power: parseFloat(profile.Power)
+                Power: parseFloat(profile.Power),
+                Day: parseFloat(profile.Day)
 
             });
 
@@ -100,7 +103,7 @@ admin.post('/uploadExcelLoadProfile', restrict, function(req, res) {
                 if(err) throw err;
 
                 // test logs
-                //console.log('profe goes here' + name);
+                // console.log('IOOOOOOOOO _____________________________ profe goes here' + name);
             });
 
         });

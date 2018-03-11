@@ -12,6 +12,7 @@
                 <tr>
                     <th>Time (HH:MM)</th>
                     <th>Total Watts</th>
+                    <th>Day Number</th>
                 </tr>
             </thread>
             <tbody>
@@ -19,6 +20,7 @@
             <tr>
                 <td><%= profile.Time.Hours %> : <%= profile.Time.Minutes %></td>
                 <td><%= profile.Power %></td>
+                <td><%= profile.Day %></td>
                 <!--<td><button class="btn btn-primary" onclick="myFunction()">Reset counts</button></td>-->
             </tr>
             <% }); %>

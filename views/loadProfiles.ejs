@@ -507,8 +507,9 @@
                         var hours = parseInt(time[0]);
                         var minutes = parseInt(time[1]);
                         var power = parseFloat(obje.P);
+                        var dayVal = parseInt(obje.D);
 
-                        data.profile.push({Time: {Hours: hours, Minutes: minutes}, Power: power});
+                        data.profile.push({Time: {Hours: hours, Minutes: minutes}, Power: power, Day: dayVal});
 
                     });
                 });
